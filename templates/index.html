@@ -52,6 +52,12 @@
             background-color: rgba(255, 255, 255, 0.1); /* 半透明背景 */
             color: white;
         }
+        /* 焦点时的效果 */
+        .input-field:focus {
+            border-color: #F5A623;  /* 更加鲜明的橙色边框 */
+            box-shadow: 0 0 15px rgba(245, 166, 35, 0.8);  /* 橙色光晕 */
+            outline: none;
+        }
         .input-field::placeholder {
             color: rgba(255, 255, 255, 0.7); /* 半透明占位符 */
         }
@@ -116,6 +122,15 @@
             margin: 0 5px;
             animation: bounce 1s infinite;
         }
+
+        #recipeContainer {
+            max-width: 100%; /* 限制最大宽度 */
+            word-wrap: break-word; /* 当文本内容过长时自动换行 */
+            word-break: break-word; /* 防止长单词溢出 */
+            white-space: pre-wrap;  /* 保持空格，并且自动换行 */
+            overflow-wrap: break-word; /* 防止文本溢出 */
+        }
+
         @keyframes growEgg {
             0% { transform: translateY(0) scale(1); opacity: 1; }
             50% { transform: translateY(-5px) scale(1.5); opacity: 0.9; }
@@ -254,8 +269,9 @@
             </div>
 
             <!-- 生成菜谱的容器 -->
-            <div id="recipeContainer" class="mt-4 text-white">
-            </div> 
+            <div id="recipeContainer" class="mt-4 text-white w-full max-w-screen-md mx-auto overflow-auto">
+                <!-- 你的菜谱内容 -->
+            </div>                       
         </div>
     </div>
 

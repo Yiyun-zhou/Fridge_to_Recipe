@@ -66,7 +66,7 @@ def generate_recipe():
     ingredients = [row[0] for row in c.fetchall()]
     conn.close()
 
-    prompt = f"你是一个顶尖营养师和厨师，请根据以下食材生成一个菜谱（注意：只要食材和做法，不需要用到所有食材）：{', '.join(ingredients)}。"
+    prompt = f"你是一个顶尖营养师和厨师，请根据以下食材生成一个菜谱（注意：只要食材和做法，不需要用到所有食材），以及保证写一句话就换行：{', '.join(ingredients)}。"
     if health_goal != '无':
         if health_goal == '减脂':
             prompt += f"健康目标：{health_goal}。请在菜谱最后给出对减脂目标较为有用的营养值，例如卡路里。"
@@ -85,14 +85,23 @@ def generate_recipe():
     if extrainfo:
         prompt += f'额外要求：{extrainfo}。'
 
+    #生日代号
     if mys_code == '0328':
         prompt += '请在output第一行写,[欢迎尊贵vip: 来自美国的孙女士和豆包博士🐻],并且菜谱除了给人的,加上一份给12岁的poodle豆包的菜谱,output直接称呼poodle为豆包就可以'
     if mys_code == '0310':
-        prompt += '请在output第一行写,[欢迎尊贵vip: 来自中国的吴老阿太和虎太郎🐯],并且菜谱除了给人的,加上一份给小猫虎太郎的菜谱,output直接称呼小猫为虎太郎就可以'
+        prompt += '请在output第一行写,[欢迎尊贵vip: 来自中国的老阿太和虎太郎🐯],并且菜谱除了给人的,加上一份给小猫虎太郎的菜谱,output直接称呼小猫为虎太郎就可以'
     if mys_code == '1112':
-        prompt += '请在output第一行写,[欢迎尊贵vip: 来自英国的沈姐和小比格]'
+        prompt += '请在output第一行写,[欢迎尊贵vip: 来自英国的沈姐和小比格🐶]'
     if mys_code == '1125':
-        prompt += '请在output第一行写,[欢迎尊贵vip: 来自外太空的小周和她的帅哥们]'
+        prompt += '请在output第一行写,[欢迎尊贵vip: 来自外太空的ai女工小周和她的帅哥们🧑‍🚀]'
+    
+    #general代号
+    if mys_code == '520':
+        prompt += '请给出一些跟爱情，520，相关的菜谱'
+    if mys_code == '1111':
+        prompt += '请给出一人食，因为用户是单身'    
+    if mys_code == '888':
+        prompt += '请给出跟发财，金钱相关的菜谱（可以是谐音/菜名相关 etc）'
     
     print("开始生成菜谱")
     try:
