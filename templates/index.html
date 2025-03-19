@@ -42,19 +42,7 @@
             text-shadow: 2px 2px 0px #000;
             color: white;
         }
-        .btn {
-            background: linear-gradient(135deg, #8A2BE2, #6A0DAD); /* 紫色渐变按钮 */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-family: 'Sixtyfour Convergence', sans-serif;
-        }
-        .btn:hover {
-            background: linear-gradient(135deg, #6A0DAD, #4B0082); /* 深紫色渐变 */
-        }
+        
         .input-field {
             border: 2px solid #8A2BE2; /* 紫色边框 */
             padding: 10px;
@@ -66,6 +54,52 @@
         }
         .input-field::placeholder {
             color: rgba(255, 255, 255, 0.7); /* 半透明占位符 */
+        }
+        .label-style {
+            color: #FFFFFF; /* 纯白色文字 */
+            font-weight: bold;
+            display: inline-block;
+            padding: 6px 14px;
+            text-align: center;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease-in-out;
+        }
+
+
+        /* 通用按钮样式 */
+        .health-goal-btn, 
+        .taste-preference-btn, 
+        .meal-btn, 
+        .allergy-btn {
+            background-color: white; /* 白色背景 */
+            border: 2px dashed #6A0DAD; /* 紫色虚线边框，加粗 */
+            color: #8A2BE2; /* 紫色文字 */
+            padding: 8px 30px; /* 内边距 */
+            font-weight: bold; /* 加粗文字 */
+            cursor: pointer; /* 鼠标指针 */
+            transition: background-color 0.3s ease, color 0.3s ease; /* 过渡效果 */
+            /* font-family: 'Sixtyfour Convergence', sans-serif; */ /* 像素字体 */
+        }
+
+        /* 悬停状态 */
+        .health-goal-btn:hover, 
+        .taste-preference-btn:hover, 
+        .meal-btn:hover, 
+        .allergy-btn:hover {
+            background-color: #7A1FA0; /* 悬停时变亮 */
+            color: #FFFFFF; /* 变成纯白色 */
+            border-color: #D9B3FF; /* 更亮的紫色边框 */
+        }
+
+        /* 选中状态 */
+        .health-goal-btn.active, 
+        .taste-preference-btn.active, 
+        .meal-btn.active, 
+        .allergy-btn.active {
+            background-color: #D080C2; /* 选中时粉紫色 */
+            color: #3B004E; /* 文字变深紫 */
+            border-color: #EAD9FF; /* 选中时的亮紫色边框 */
         }
         .section-divider {
             border-bottom: 2px dashed #FF6F61; /* 粉色虚线分界线 */
@@ -82,10 +116,23 @@
             margin: 0 5px;
             animation: bounce 1s infinite;
         }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes growEgg {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-5px) scale(1.5); opacity: 0.9; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
         }
+
+        .egg {
+            font-size: 2rem;
+            display: inline-block;
+            animation: growEgg 1.2s infinite ease-in-out;
+        }
+
+        .egg:nth-child(1) { animation-delay: 0s; }
+        .egg:nth-child(2) { animation-delay: 0.2s; }
+        .egg:nth-child(3) { animation-delay: 0.4s; }
+        .egg:nth-child(4) { animation-delay: 0.6s; }
+        .egg:nth-child(5) { animation-delay: 0.8s; }
     </style>
 </head>
 <body>
@@ -100,7 +147,7 @@
                 <input type="text" id="ingredientInput" placeholder="输入食材，例如：鸡蛋、番茄" 
                        class="input-field">
                 <button onclick="addIngredient()" class="btn ml-2">
-                    <i class="fas fa-plus"></i> 添加
+                    <i class="fas fa-plus"></i>
                 </button>
             </div>
             <ul id="ingredientList" class="mt-4 space-y-2"></ul>
@@ -113,88 +160,92 @@
             <div class="space-y-4">
                 <!-- 健康目标 -->
                 <div class="mb-8">
-                    <label class="block text-white mb-2">🎯 健康目标</label>
+                    <label class="label-style">🎯 健康目标</label>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="selectHealthGoal('无', event)" class="btn">无</button>
-                        <button onclick="selectHealthGoal('减脂', event)" class="btn">减脂</button>
-                        <button onclick="selectHealthGoal('增肌', event)" class="btn">增肌</button>
-                        <button onclick="selectHealthGoal('抗炎', event)" class="btn">抗炎</button>
-                        <button onclick="selectHealthGoal('低盐', event)" class="btn">低盐</button>
+                        <button onclick="selectHealthGoal('无', event)" class="health-goal-btn">无</button>
+                        <button onclick="selectHealthGoal('减脂', event)" class="health-goal-btn">减脂</button>
+                        <button onclick="selectHealthGoal('增肌', event)" class="health-goal-btn">增肌</button>
+                        <button onclick="selectHealthGoal('抗炎', event)" class="health-goal-btn">抗炎</button>
+                        <button onclick="selectHealthGoal('低盐', event)" class="health-goal-btn">低盐</button>
                     </div>
                 </div>
 
                 <!-- 口味偏好 -->
                 <div>
-                    <label class="block text-white mb-2">💗 口味偏好</label>
+                    <label class="label-style">💗 口味偏好</label>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="selectTastePreference('无', event)" class="btn">无</button>
-                        <button onclick="selectTastePreference('清淡', event)" class="btn">清淡</button>
-                        <button onclick="selectTastePreference('麻辣', event)" class="btn">麻辣</button>
-                        <button onclick="selectTastePreference('中式', event)" class="btn">中式</button>
-                        <button onclick="selectTastePreference('西式', event)" class="btn">西式</button>
-                        <button onclick="selectTastePreference('亚洲风味', event)" class="btn">亚洲风味</button>
+                        <button onclick="selectTastePreference('无', event)" class="taste-preference-btn">无</button>
+                        <button onclick="selectTastePreference('清淡', event)" class="taste-preference-btn">清淡</button>
+                        <button onclick="selectTastePreference('麻辣', event)" class="taste-preference-btn">麻辣</button>
+                        <button onclick="selectTastePreference('中式', event)" class="taste-preference-btn">中式</button>
+                        <button onclick="selectTastePreference('西式', event)" class="taste-preference-btn">西式</button>
+                        <button onclick="selectTastePreference('亚洲风味', event)" class="taste-preference-btn">亚洲风味</button>
                     </div>
                 </div>
 
                 <!-- 哪一餐 -->
                 <div class="mb-8">
-                    <label class="block text-white mb-2">🕗 早上，中午，晚上，夜宵</label>
+                    <label class="label-style">🕗 早上，中午，晚上，夜宵</label>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="selectMeal('早饭', event)" class="btn">早饭</button>
-                        <button onclick="selectMeal('午饭', event)" class="btn">午饭</button>
-                        <button onclick="selectMeal('晚饭', event)" class="btn">晚饭</button>
-                        <button onclick="selectMeal('夜宵', event)" class="btn">夜宵</button>
-                        <button onclick="selectMeal('小吃', event)" class="btn">小吃</button>
+                        <button onclick="selectMeal('早饭', event)" class="meal-btn">早饭</button>
+                        <button onclick="selectMeal('午饭', event)" class="meal-btn">午饭</button>
+                        <button onclick="selectMeal('晚饭', event)" class="meal-btn">晚饭</button>
+                        <button onclick="selectMeal('夜宵', event)" class="meal-btn">夜宵</button>
+                        <button onclick="selectMeal('小吃', event)" class="meal-btn">小吃</button>
                     </div>
                 </div>
 
                 <!-- 忌口/过敏 -->
                 <div class="mb-8">
-                    <label class="block text-white mb-2">🚫 忌口/过敏</label>
+                    <label class="label-style">🚫 忌口/过敏</label>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="selectAllergy('无', event)" class="btn">无</button>
-                        <button onclick="selectAllergy('坚果', event)" class="btn">坚果</button>
-                        <button onclick="selectAllergy('海鲜', event)" class="btn">海鲜</button>
-                        <button onclick="selectAllergy('乳制品', event)" class="btn">乳制品</button>
-                        <button onclick="selectAllergy('麸质', event)" class="btn">麸质</button>
+                        <button onclick="selectAllergy('无', event)" class="allergy-btn">无</button>
+                        <button onclick="selectAllergy('坚果', event)" class="allergy-btn">坚果</button>
+                        <button onclick="selectAllergy('海鲜', event)" class="allergy-btn">海鲜</button>
+                        <button onclick="selectAllergy('乳制品', event)" class="allergy-btn">乳制品</button>
+                        <button onclick="selectAllergy('麸质', event)" class="allergy-btn">麸质</button>
                     </div>
                 </div>
 
                 <!-- 用餐人数 -->
                 <div class="mb-8">
-                    <label class="block text-white mb-2">🔢 用餐人数</label>
+                    <label class="label-style">🔢 用餐人数</label>
                     <input type="number" id="servings" min="1" value="1" class="input-field">
                 </div>
 
                 <!-- 其他要求 -->    
                 <div class="mb-8">
-                    <label class="block text-white mb-2">📝 更多要求...</label>
+                    <label class="label-style">📝 更多要求...</label>
                     <input type="text" id="additional-requirements" placeholder="中式，西式，快手菜，精致风...（可选）" class="input-field">
                 </div>
 
                 <!-- 神秘代码 -->    
                 <div class="mb-8">
-                    <label class="block text-white mb-2">🦹‍♀️ 爱的号码牌</label>
+                    <label class="label-style">🦹‍♀️ 爱的号码牌</label>
                     <input type="text" id="code_with_love" placeholder="" class="input-field">
                 </div>
             </div>
         </div>
 
         <!-- 生成菜谱部分 -->
-        <div>
-            <h2 class="text-2xl mb-4">🍽️ Recipe is HERE</h2>
+        <div class="mb-8">
+            <div class="flex items-center space-x-2"> 
+                <h2 class="text-2xl">🍽️ Recipe is HERE</h2>
+                <button id="generateRecipeBtn" onclick="generateRecipe()" class="btn">
+                    🪄
+                </button>
+            </div>
             <div class="section-divider"></div>
-            <button id="generateRecipeBtn" onclick="generateRecipe()" class="btn w-full">
-                <i class="fas fa-magic"></i> 生成菜谱
-            </button>
+        </div>
+        
 
             <!-- 加载动画容器 -->
             <div id="loadingAnimation" class="loading-animation" style="display: none;">
-                <span>🍳</span>
-                <span>🍳</span>
-                <span>🍳</span>
-                <span>🍳</span>
-                <span>🍳</span>
+                <span class="egg">🍳</span>
+                <span class="egg">🍳</span>
+                <span class="egg">🍳</span>
+                <span class="egg">🍳</span>
+                <span class="egg">🍳</span>
             </div>
 
             <!-- 进度条 -->
@@ -209,7 +260,161 @@
     </div>
 
     <script>
-        // JavaScript部分保持不变
+       // 添加食材
+       async function addIngredient() {
+            const ingredient = document.getElementById('ingredientInput').value;
+            if (!ingredient) return; // 如果输入为空，直接返回
+    
+            const response = await fetch('/ingredients', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: ingredient }),
+            });
+            const data = await response.json();
+            loadIngredients();
+            document.getElementById('ingredientInput').value = ''; // 清空输入框
+        }
+    
+        // 加载食材列表
+        async function loadIngredients() {
+            const response = await fetch('/ingredients');
+            const ingredients = await response.json();
+            const list = document.getElementById('ingredientList');
+            list.innerHTML = ingredients.map(i => `
+                <li class="flex items-center justify-between bg-[#7B2CBF] border-b border-[#FFAA33] p-3 rounded-lg shadow-lg pixel-pattern border-b-2 border-white last:border-b-0">
+                    <span class="text-white-700">${i[1]}</span>
+                    <button onclick="deleteIngredient(${i[0]})" 
+                            class="text-red-500 hover:text-red-700 transition duration-300">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </li>
+            `).join('');
+        }
+    
+        // 删除食材
+        async function deleteIngredient(id) {
+            await fetch(`/ingredients/${id}`, { method: 'DELETE' });
+            loadIngredients();
+        }
+    
+        // 处理按钮
+        let selectedHealthGoal = '无';
+        let selectedTastePreference = '无';
+        let selectedMeal = '无';
+        let selectedAllergy = '无';
+    
+        function selectHealthGoal(goal, event) {
+            selectedHealthGoal = goal;
+            document.querySelectorAll('.health-goal-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    
+        function selectTastePreference(preference, event) {
+            selectedTastePreference = preference;
+            document.querySelectorAll('.taste-preference-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    
+        function selectMeal(meal, event) {
+            selectedMeal = meal;
+            document.querySelectorAll('.meal-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    
+        function selectAllergy(allergy, event) {
+            selectedAllergy = allergy;
+            document.querySelectorAll('.allergy-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    
+        // 生成菜谱
+        async function generateRecipe() {
+            try {
+                // 显示加载动画
+                document.getElementById('loadingAnimation').style.display = 'flex';
+                document.getElementById('progressContainer').style.display = 'block';
+
+                // 模拟进度条
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                    }
+                }, 500);
+
+                // 收集用户输入的数据
+                const ingredients = await getIngredients(); // 假设你有一个函数来获取当前食材列表
+                const servings = document.getElementById('servings').value;
+                const healthGoal = selectedHealthGoal;
+                const tastePreference = selectedTastePreference;
+                const meal = selectedMeal;
+                const allergy = selectedAllergy;
+                const additionalRequirements = document.getElementById('additional-requirements').value;
+                const lovecode = document.getElementById('code_with_love').value;
+
+                // 向后端请求生成菜谱
+                const response = await fetch('/generate-recipe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ingredients, servings, healthGoal, tastePreference, meal, allergy, additionalRequirements, lovecode
+                    })
+                });
+
+                // 检查响应状态
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const recipe = await response.json();
+
+                // 隐藏加载动画
+                document.getElementById('loadingAnimation').style.display = 'none';
+                document.getElementById('progressContainer').style.display = 'none';
+
+                // 显示菜谱
+                const recipeContainer = document.getElementById('recipeContainer');
+                recipeContainer.innerHTML = `
+                    <h3 class="text-2xl font-semibold text-white-800 mb-4">🍴 你的菜谱</h3>
+                    <pre>${recipe.recipe}</pre>
+                `;
+
+            } catch (error) {
+                console.error('Error generating recipe:', error);
+                // 如果有错误，隐藏加载动画，并显示错误信息
+                document.getElementById('loadingAnimation').style.display = 'none';
+                document.getElementById('progressContainer').style.display = 'none';
+                alert('生成菜谱时发生错误，请稍后再试。');
+            }
+        }
+
+        // 获取食材列表
+        async function getIngredients() {
+            try {
+                const response = await fetch('/ingredients');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const ingredients = await response.json();
+                return ingredients.map(i => i[1]);
+            } catch (error) {
+                console.error('Error fetching ingredients:', error);
+                return [];
+            }
+        }
+
+        // 页面加载时加载食材列表
+        loadIngredients();
     </script>
 </body>
 </html>

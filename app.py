@@ -15,10 +15,6 @@ def init_db():
     conn.close()
 
 # 初始化 OpenAI
-# 强制加载 .env
-load_dotenv()
-
-# 检查 API Key 是否成功读取
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise ValueError("Error: OPENAI_API_KEY not found!")
